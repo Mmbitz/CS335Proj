@@ -212,7 +212,7 @@ public class JoglEventListener implements GLEventListener, KeyListener, MouseLis
 	}
 	
 	double friction(int mass){
-		double frict = .5 * mass * velocityX * velocityX;
+		double frict = .5 * mass * velocityX * velocityX * 9.8;
 		return frict;
 	}
 	
@@ -259,14 +259,14 @@ public class JoglEventListener implements GLEventListener, KeyListener, MouseLis
 			facingDirection = 360;
 		}
 		
-		velocityX += accelX * friction(10) * frequency;
-		velocityY += -1 * accelY * friction(10) * frequency;
+		velocityX += accelX * 0.2 * frequency;
+		velocityY += -1 * accelY * 0.2 * frequency;
 		posX += velocityX * frequency;
 		posY += velocityY * frequency;
 		posZ = 0;
 		facingVelocity += turnAmount * frequency;
 		facingDirection += facingVelocity * frequency;
-		
+		//System.out.println(velocityX);
 	}
 
 	@Override
@@ -331,6 +331,7 @@ public class JoglEventListener implements GLEventListener, KeyListener, MouseLis
 		gl.glPushMatrix();
 		gl.glRotated(90, 1, 0, 0);
 		gl.glTranslated(posX, posY, posZ);
+		//System.out.println(posX);
 		gl.glRotated(-90, 0, 1, 0);
 		moveCar();
 		drawCar(gl);
@@ -916,16 +917,19 @@ public class JoglEventListener implements GLEventListener, KeyListener, MouseLis
 			//move forward
 			accelX += 0.3 * Math.cos(Math.toRadians(facingDirection));
 			accelY += 0.3 * Math.sin(Math.toRadians(facingDirection));
+			System.out.println(accelX);
 		}
 		
 		if (key == 'k'){
 			//move backwards
 			accelX += -1 * 0.3 * Math.cos(Math.toRadians(facingDirection));
 			accelY += -1 * 0.3 * Math.sin(Math.toRadians(facingDirection));
+			System.out.println(accelX);
 		}
 		if (key == 'j'){
 			//move left
 			turning(1);
+			System.out.println(posX);
 		}
 		if (key == 'l'){
 			//move right
