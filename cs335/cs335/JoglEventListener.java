@@ -72,7 +72,7 @@ public class JoglEventListener implements GLEventListener, KeyListener, MouseLis
 	//Render Car
 	private Build my_model;
 	//Set max
-	double maxAngle = 60;
+	double maxAngle = 30;
 	double maxAccelX = 10;
 	double maxAccelY = 10;
 	
@@ -120,13 +120,13 @@ public class JoglEventListener implements GLEventListener, KeyListener, MouseLis
 			gl.glGenTextures(texID.length, texID, 0);
 			texture_loader.loadTexture(texID[0], "/Users/Julian/Documents/workspace/skybox/CS335Textures/grass.jpg");
 			texture_loader.loadTexture(texID[1], "/Users/Julian/Documents/workspace/skybox/CS335Textures/asphalt.jpg");
-			/*texture_loader.loadTexture(texID[2], "/Users/Julian/Documents/workspace/skybox/CS335Textures/brick.jpg");
-			texture_loader.loadTexture(texID[3], "/Users/Julian/Documents/workspace/skybox/CS335Textures/crowd.jpg");
-			texture_loader.loadTexture(texID[4], "/Users/Julian/Documents/workspace/skybox/CS335Textures/bluth.jpg");
-			texture_loader.loadTexture(texID[5], "/Users/Julian/Documents/workspace/skybox/CS335Textures/garagefloor.jpg");
-			texture_loader.loadTexture(texID[6], "/Users/Julian/Documents/workspace/skybox/CS335Textures/garagedoor.jpg");
-			texture_loader.loadTexture(texID[7], "/Users/Julian/Documents/workspace/skybox/CS335Textures/garagesign.jpg");
-			texture_loader.loadTexture(texID[8], "/Users/Julian/Documents/workspace/skybox/CS335Textures/speedway.jpg"); */
+			texture_loader.loadTexture(texID[2], "/Users/Julian/Documents/workspace/skybox/CS335Textures/brick.jpg");
+			//texture_loader.loadTexture(texID[3], "/Users/Julian/Documents/workspace/skybox/CS335Textures/crowd.jpg");
+			//texture_loader.loadTexture(texID[4], "/Users/Julian/Documents/workspace/skybox/CS335Textures/bluth.jpg");
+			//texture_loader.loadTexture(texID[5], "/Users/Julian/Documents/workspace/skybox/CS335Textures/garagefloor.jpg");
+			//texture_loader.loadTexture(texID[6], "/Users/Julian/Documents/workspace/skybox/CS335Textures/garagedoor.jpg");
+			//texture_loader.loadTexture(texID[7], "/Users/Julian/Documents/workspace/skybox/CS335Textures/garagesign.jpg");
+			//texture_loader.loadTexture(texID[8], "/Users/Julian/Documents/workspace/skybox/CS335Textures/speedway.jpg"); 
 	} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -217,7 +217,7 @@ public class JoglEventListener implements GLEventListener, KeyListener, MouseLis
 	}
 	
 	public void moveCar(){
-		double frequency = 10/1000;
+		double frequency = 0.1;
 		double velocityDirection = Math.toDegrees(Math.atan2(-velocityY, velocityX));
 		double turnAmount = 0;
 		
@@ -226,10 +226,10 @@ public class JoglEventListener implements GLEventListener, KeyListener, MouseLis
 		}
 		if (turning == Turns.noTurn){
 			if (facingDirection > velocityDirection){
-				turnAmount = 1 / (-1 * 60);
+				turnAmount = -0.016;
 			}
 			if (facingDirection < velocityDirection){
-				turnAmount = 1 / (1 * 60);
+				turnAmount = 0.016;
 			}
 		}
 		if (turning == Turns.turnRight){
@@ -244,12 +244,14 @@ public class JoglEventListener implements GLEventListener, KeyListener, MouseLis
 		}
 		if (turning == Turns.turnLeft){
 			if (facingDirection - velocityDirection > maxAngle){
+				System.out.println("yes");
 				turning = Turns.noTurn;
 				turnAmount = 0;
 				facingVelocity = 0;
 			}
 			else{
 				turnAmount = -1 * facingVelocity;
+				System.out.println(turnAmount);
 			}
 		}
 		if (facingDirection > 360){
@@ -259,14 +261,13 @@ public class JoglEventListener implements GLEventListener, KeyListener, MouseLis
 			facingDirection = 360;
 		}
 		
-		velocityX += accelX * 0.2 * frequency;
-		velocityY += -1 * accelY * 0.2 * frequency;
+		velocityX +=  0.5 * frequency * accelX;	
+		velocityY += -1 * 0.5 * frequency * accelY;
 		posX += velocityX * frequency;
 		posY += velocityY * frequency;
 		posZ = 0;
 		facingVelocity += turnAmount * frequency;
 		facingDirection += facingVelocity * frequency;
-		//System.out.println(velocityX);
 	}
 
 	@Override
@@ -282,7 +283,10 @@ public class JoglEventListener implements GLEventListener, KeyListener, MouseLis
 		
 		//AI Path
 		//updateAIPositions(gl);
-		
+		if (animation == true){
+			
+			moveCar();
+		}
 		
 		// Update the camera state.
 		if ( keys[KeyEvent.VK_W] || keys[KeyEvent.VK_S] ) {
@@ -330,21 +334,25 @@ public class JoglEventListener implements GLEventListener, KeyListener, MouseLis
 		
 		gl.glPushMatrix();
 		gl.glRotated(90, 1, 0, 0);
-		gl.glTranslated(posX, posY, posZ);
+		gl.glTranslated(posX, 0, posY);
 		//System.out.println(posX);
 		gl.glRotated(-90, 0, 1, 0);
-		moveCar();
+		
 		drawCar(gl);
 		gl.glPopMatrix();
 		
 		gl.glPushMatrix();
-		gl.glTranslated(posX-4, posY, posZ);
-		//drawCube(gl);
+		gl.glRotated(90, 1, 0, 0);
+		gl.glTranslated(posX-5, posY, posZ);
+		gl.glRotated(-90, 0, 1, 0);
+		drawCar(gl);
 		gl.glPopMatrix();
 		
 		gl.glPushMatrix();
-		gl.glTranslated(posX, posY, posZ);
-		//drawCube(gl);
+		gl.glRotated(90, 1, 0, 0);
+		gl.glTranslated(posX +5, posY, posZ);
+		gl.glRotated(-90, 0, 1, 0);
+		drawCar(gl);
 		gl.glPopMatrix();
 		
 		gl.glPushMatrix();
@@ -894,7 +902,7 @@ public class JoglEventListener implements GLEventListener, KeyListener, MouseLis
 		
 		if (key == ' '){
 			animation = !animation;
-			System.out.println(animation);
+			System.out.println(velocityX);
 		}
 		
 		if (key == 't'){
@@ -917,23 +925,23 @@ public class JoglEventListener implements GLEventListener, KeyListener, MouseLis
 			//move forward
 			accelX += 0.3 * Math.cos(Math.toRadians(facingDirection));
 			accelY += 0.3 * Math.sin(Math.toRadians(facingDirection));
-			System.out.println(accelX);
+			
 		}
 		
 		if (key == 'k'){
 			//move backwards
 			accelX += -1 * 0.3 * Math.cos(Math.toRadians(facingDirection));
 			accelY += -1 * 0.3 * Math.sin(Math.toRadians(facingDirection));
-			System.out.println(accelX);
 		}
 		if (key == 'j'){
 			//move left
 			turning(1);
-			System.out.println(posX);
+			System.out.println(turning);
 		}
 		if (key == 'l'){
 			//move right
 			turning(2);
+			System.out.println(turning);
 		}
 		if (key == 'o'){
 			//accelerate
