@@ -239,7 +239,8 @@ public class JoglEventListener implements GLEventListener, KeyListener, MouseLis
 				facingVelocity = 0;
 			}
 			else{
-				turnAmount = facingVelocity;
+				//turnAmount = facingVelocity;
+				turnAmount = 0.4;
 			}
 		}
 		if (turning == Turns.turnLeft){
@@ -250,8 +251,9 @@ public class JoglEventListener implements GLEventListener, KeyListener, MouseLis
 				facingVelocity = 0;
 			}
 			else{
-				turnAmount = -1 * facingVelocity;
-				System.out.println(turnAmount);
+				//turnAmount = -1 * facingVelocity;
+				turnAmount = -1 * 0.4;
+				//System.out.println(facingVelocity);
 			}
 		}
 		if (facingDirection > 360){
@@ -268,6 +270,7 @@ public class JoglEventListener implements GLEventListener, KeyListener, MouseLis
 		posZ = 0;
 		facingVelocity += turnAmount * frequency;
 		facingDirection += facingVelocity * frequency;
+		//System.out.println(facingDirection);
 	}
 
 	@Override
@@ -336,8 +339,7 @@ public class JoglEventListener implements GLEventListener, KeyListener, MouseLis
 		gl.glRotated(90, 1, 0, 0);
 		gl.glTranslated(posX, 0, posY);
 		//System.out.println(posX);
-		gl.glRotated(-90, 0, 1, 0);
-		
+		gl.glRotated(-90 + facingDirection, 0, 1, 0);
 		drawCar(gl);
 		gl.glPopMatrix();
 		
