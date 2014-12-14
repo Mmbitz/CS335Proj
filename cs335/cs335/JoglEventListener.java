@@ -188,20 +188,39 @@ public class JoglEventListener implements GLEventListener, KeyListener, MouseLis
 	double velX = 0.1;
 	double velY =0.1;
 	
+	/*
+	void checkMiddle(){
+		mouse_x0
+		mouse_y0
+		if (posY > 60) || posY < -60{
+			system.out.
+		}
+		
+	}
+	*/
+	
 	void checkCollisions(){
 		//At posX = -15, 14, 19, and 48 hits walls on right side
 		//At posY = -60, and 60 rotation starts
 		//At posY = +- 60.5 and posX = +- 16.5 at the radius for turning
 		
+		//outside as a box
 		if (posX < -14){
-			velocityX = velocityX * -1 + velocityX;
+			velocityX = velocityX * -1/2;
 		}
 		if (posX > 48){
-			velocityX = velocityX * -1 + velocityX;
+			velocityX = velocityX * -1/2;
 		}
-		if (posX > 14 && posX < 17 && posY > 60 || posX > 14 && posX < 17 && posY > -60){
-			velocityX = velocityX * -1 + velocityX;
+		if (posY < -82 || posY > 82){
+			velocityY = velocityY * -1/2;
 		}
+		
+		//central rectangle
+		if ((posY > 60 || posY < -60) || (posX > 14 && posX < 18)){
+			velocityY = velocityY * -1;
+			velocityX = velocityX * -1;
+		}
+		
 		
 	
 	}
@@ -233,8 +252,19 @@ public class JoglEventListener implements GLEventListener, KeyListener, MouseLis
 		return frict;
 	}
 	
+	boolean left = false;
+	boolean right = false;
+	public void steering(GL2 gl){
+		if (turning == Turns.turnLeft){
+			gl.glRotated(45, 0, 1, 0);
+		}
+		if (turning == Turns.turnRight){
+			gl.glRotated(-45, 0, 1, 0);
+		}
+	}
+	
 	double turnAmount = 0;
-	public void moveCar(){
+	public void moveCar(GL2 gl){
 		double frequency = 0.1;
 		double velocityDirection = Math.toDegrees(Math.atan2(-velocityY, velocityX));
 		
@@ -250,7 +280,9 @@ public class JoglEventListener implements GLEventListener, KeyListener, MouseLis
 				turnAmount = 0.001;
 			}
 		}
-		if (turning == Turns.turnRight){
+		steering(gl);
+		
+		//if (turning == Turns.turnRight){
 			/*
 			if (facingDirection -  velocityDirection < -maxAngle){
 				turning = Turns.noTurn;
@@ -262,9 +294,10 @@ public class JoglEventListener implements GLEventListener, KeyListener, MouseLis
 				turnAmount = -2;
 			}
 			*/
-			turnAmount = -1.5;
-		}
-		if (turning == Turns.turnLeft){
+			//turnAmount = -1.5;
+			//steering(gl);
+		//}
+		//if (turning == Turns.turnLeft){
 			/*if (facingDirection - velocityDirection > maxAngle){
 				System.out.println("yes");
 				turning = Turns.noTurn;
@@ -277,8 +310,10 @@ public class JoglEventListener implements GLEventListener, KeyListener, MouseLis
 				//System.out.println(facingVelocity);
 			}
 			*/
-			turnAmount = 1.5;
-		}
+			//turnAmount = 1.5;
+			//steering(gl);
+		//}
+		
 		if (facingDirection > 360){
 			facingDirection = 0;
 		}
@@ -310,8 +345,7 @@ public class JoglEventListener implements GLEventListener, KeyListener, MouseLis
 		//AI Path
 		//updateAIPositions(gl);
 		if (animation == true){
-			checkCollisions();
-			moveCar();
+			checkCollisions();	
 		}
 		
 		// Update the camera state.
@@ -362,7 +396,10 @@ public class JoglEventListener implements GLEventListener, KeyListener, MouseLis
 		gl.glRotated(90, 1, 0, 0);
 		gl.glTranslated(posX, 0, posY);
 		//System.out.println(posX);
-		gl.glRotated(90 + facingDirection, 0, 1, 0);
+		gl.glRotated(90, 0, 1, 0);
+		if (animation == true){
+			moveCar(gl);
+		}
 		drawCar(gl);
 		gl.glPopMatrix();
 		
@@ -903,7 +940,7 @@ public class JoglEventListener implements GLEventListener, KeyListener, MouseLis
 	}
 
 	@Override
-	public void keyTyped( KeyEvent e ) {
+	public void keyTyped( KeyEvent e) {
 		char key = e.getKeyChar();
 		
 		switch ( key ) {
@@ -932,6 +969,13 @@ public class JoglEventListener implements GLEventListener, KeyListener, MouseLis
 		
 		if (key == 't'){
 			//toggle first person
+		}
+		
+		if(key == 'j'){
+			left = true;
+		}
+		if (key == 'l'){
+			right = true;
 		}
 		
 		
