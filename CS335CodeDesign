@@ -1,8 +1,21 @@
 Code Design for Julian and Matt’s CS 335 Project:
 
 Landscaping and Texturing:
-	For the landscape and the 3D environment, we used simple shapes and textures to recreate
-	a racetrack for our cars to race on. Even though I have no Java experience, I was able to 
-	get a	fairly nice looking track and environment. Translates and rotates were used to keep 
-	everything 	in place an draw it. For the billboarding technique I used a simple rotate based 
-	on the angle 	between the camera and the tree object.
+	For the landscape and the 3D environment, we used simple shapes and textures to recreate a racetrack for our cars to race on. Even though I have no Java experience, I was able to get a fairly nice looking track and environment. Translates and rotates were used to keep everything in place an draw it. For the billboarding technique I used a simple rotate based on the angle between the camera and the tree object.
+
+Computer AI:
+	The AI in the game is set to move around the race track in a square, using varying velocities for different user difficulties. The cars will rotate a full 90 degrees whenever turning direction and follow a set path. Three cars exist with one car being slow, the other being average speed, and the last one being the fastest one to try beating.
+
+	In order to track when three laps around the field have been accomplished, a counter is used that keeps track of the amount of loops around the field for the fastest AI car and the user controlled car. For the user controlled car, the counter increments each time the user passes the y=0 position. Since the user will pass through y = 0 two times per loop, when the counter hits 6 the game will be paused and a message will pop up telling the user they have won if they reach three laps before the computer. For the computer counter, the speed of the fastest car goes too fast to hit exactly at y = 0 so we use a different counter that keeps track of how much time the car is at a position y > 0. The fastest AI car will finish its third lap around the course when the counter is equal to 83, and a pop up will appear pausing the game, which announces the computer as the winner.
+
+	The game also creates a UI timer using a JPanel. The clock has user functionality allowing the user to reset, pause, or start the clock manually. Also, the clock is set to start when the user presses the space bar.
+ 
+	For collision detection we made our track be considered as a donut with a rectangle in the middle. The cars will collide with the inside walls and to add an extra degree of difficult for the user, the velocity in the x or y direction will get reversed resulting in lost time speeding the car again. The outside walls will provide the same collision as the inside walls.
+
+Car Movement:
+	The user controlled car is based on constantly updating velocities in the x, y, and z fields. When a certain velocity is updated, the position of the car will get incremented (or decremented) by the velocity that changed in its respective x, y, or z field. The car has built in acceleration which allows it to speed up, and slow down based on the user input to the point of breaking.
+
+For steering, we enumerate three possibilities: not turning, turning to the left, or turning to the right. By default the car is not turning, however whenever turning to the left or right, the x-axis gets updated accordingly and the car is rotated by 45 degrees in the respective turning direction.
+
+Viewpoint:
+	The game can toggle first person view by pressing the t button. Aside from this, the user can manually zoom in/out, rotate, and translate around the game world using the wasd keyboard buttons, mouse button, and the r/f buttons to change elevation of the camera. 
