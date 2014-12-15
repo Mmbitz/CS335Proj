@@ -1,0 +1,8 @@
+Code Design for Julian and Matt’s CS 335 Project:
+
+Landscaping and Texturing:
+	For the landscape and the 3D environment, we used simple shapes and textures to recreate
+	a racetrack for our cars to race on. Even though I have no Java experience, I was able to 
+	get a	fairly nice looking track and environment. Translates and rotates were used to keep 
+	everything 	in place an draw it. For the billboarding technique I used a simple rotate based 
+	on the angle 	between the camera and the tree object.
