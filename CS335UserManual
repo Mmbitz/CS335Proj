@@ -1,0 +1,20 @@
+User Manual for Julian and Matt’s CS 335 Project:
+
+Keys to note:
+	In Free-view Mode:
+		Click and drag with mouse to rotate
+		Hold W key to advance in that direction
+		Hold F to descend
+		Hold R to ascend
+		Hold A to strafe left
+		Hold D to strafe right
+
+	Car Controls:
+		I to accelerate
+		K to decelerate
+		L to go right
+		J to go left
+
+	Misc Keys:
+		Hit “KEY” to go first person
+		Hit Spacebar to start the race!
